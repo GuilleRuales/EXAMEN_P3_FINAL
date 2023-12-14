@@ -7,6 +7,7 @@ import com.example.models.Cuerda;
 import com.example.models.Percusion;
 import com.example.models.Producto;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -47,9 +48,7 @@ public class PercusionView extends Composite<VerticalLayout> {
         ComboBox comboBox2 = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
-        Button buttonSecondary = new Button();
-
-        Binder<Percusion> binder = new Binder<>(Percusion.class);
+        Button btcancelar = new Button();
 
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
@@ -155,6 +154,7 @@ public class PercusionView extends Composite<VerticalLayout> {
 
             // Validar que los campos no estén vacíos antes de guardar
 
+                percusion.setCategoria("Percusión");
             percusion.setNombre(nombre);
             percusion.setCodigo(codigo);
             percusion.setPrecio(precio);
@@ -176,8 +176,13 @@ public class PercusionView extends Composite<VerticalLayout> {
 
         });
 
-        buttonSecondary.setText("Cancelar");
-        buttonSecondary.setWidth("min-content");
+        btcancelar.setText("Cancelar");
+        btcancelar.setWidth("min-content");
+        btcancelar.addClickListener(event -> {
+            UI.getCurrent().navigate("instrumento");
+        });
+
+
         getContent().add(layoutColumn2);
         layoutColumn2.add(layoutRow);
         layoutRow.add(textField);
@@ -194,7 +199,7 @@ public class PercusionView extends Composite<VerticalLayout> {
         layoutColumn2.add(comboBox2);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
-        layoutRow5.add(buttonSecondary);
+        layoutRow5.add(btcancelar);
     }
 
     record SampleItem(String value, String label, Boolean disabled) {
@@ -202,19 +207,21 @@ public class PercusionView extends Composite<VerticalLayout> {
 
     private void setComboBoxSampleData(ComboBox comboBox) {
         List<SampleItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new SampleItem("alta", "Alta", null));
-        sampleItems.add(new SampleItem("media", "Media", null));
-        sampleItems.add(new SampleItem("baja", "Baja", Boolean.TRUE));
+        sampleItems.add(new SampleItem("acustico", "Acustico", null));
+        sampleItems.add(new SampleItem("electrico", "Electrico", null));
         comboBox.setItems(sampleItems);
         comboBox.setItemLabelGenerator(item -> ((SampleItem) item).label());
     }
 
     private void setComboBox2SampleData(ComboBox comboBox2) {
         List<SampleItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new SampleItem("acustico", "Acustico", null));
-        sampleItems.add(new SampleItem("electrico", "Electrico", null));
+        sampleItems.add(new SampleItem("alta", "Alta", null));
+        sampleItems.add(new SampleItem("media", "Media", null));
+        sampleItems.add(new SampleItem("baja", "Baja", Boolean.TRUE));
         comboBox2.setItems(sampleItems);
         comboBox2.setItemLabelGenerator(item -> ((SampleItem) item).label());
     }
+
+
 
 }

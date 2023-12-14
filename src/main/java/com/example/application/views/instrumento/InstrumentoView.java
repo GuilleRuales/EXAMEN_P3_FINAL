@@ -40,14 +40,14 @@ public class InstrumentoView extends Composite<VerticalLayout> {
 
         Grid<Producto> grid = new Grid<>(Producto.class, false);
 
-        grid.addColumn(Producto::getCategoria).setHeader("Categoria").setAutoWidth(true);
-        grid.addColumn(Producto::getNombre).setHeader("Nombre").setAutoWidth(true);
-        grid.addColumn(Producto::getCodigo).setHeader("Codigo").setAutoWidth(true);
-        grid.addColumn(Producto::getPrecio).setHeader("Precio").setAutoWidth(true);
-        grid.addColumn(Producto::getStock).setHeader("Stock").setAutoWidth(true);
-        grid.addColumn(Producto::getMarca).setHeader("Marca").setAutoWidth(true);
-        grid.addColumn(Producto::getCalidad).setHeader("Gama").setAutoWidth(true);
-        grid.addColumn(Producto::getTipo).setHeader("Tipo").setAutoWidth(true);
+        grid.addColumn(Producto::getCategoria).setHeader("Categoria").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getNombre).setHeader("Nombre").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getCodigo).setHeader("Codigo").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getPrecio).setHeader("Precio").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getStock).setHeader("Stock").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getMarca).setHeader("Marca").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getCalidad).setHeader("Gama").setSortable(true).setAutoWidth(true);
+        grid.addColumn(Producto::getTipo).setHeader("Tipo").setSortable(true).setAutoWidth(true);
 
         grid.addColumn(
                 new ComponentRenderer<>(producto -> {
@@ -59,7 +59,7 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                         Util.listaProducto.remove(producto);
                         grid.getDataProvider().refreshAll();
                     });
-
+                    /*
                     // Botón para editar
                     Button botonEditar = new Button();
                     botonEditar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -77,9 +77,10 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                         // Aquí el código para ver el producto
                         // Por ejemplo, abrir un formulario de edición
                     });
-
+                    */
                     // Añadir los botones a un layout horizontal
-                    HorizontalLayout buttons = new HorizontalLayout(botonBorrar, botonVer);
+
+                    HorizontalLayout buttons = new HorizontalLayout(botonBorrar);
                     return buttons;
                 })).setHeader("Manage").setAutoWidth(true);
 

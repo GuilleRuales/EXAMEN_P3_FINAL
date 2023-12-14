@@ -7,6 +7,7 @@ import com.example.models.Cuerda;
 import com.example.models.Percusion;
 import com.example.models.Viento;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -46,7 +47,7 @@ public class CuerdaView extends Composite<VerticalLayout> {
         ComboBox comboBox3 = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
-        Button buttonSecondary = new Button();
+        Button btcancelar = new Button();
 
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
@@ -140,10 +141,13 @@ public class CuerdaView extends Composite<VerticalLayout> {
             Integer stock = Integer.valueOf(textField4.getValue());
             String marca = textField5.getValue();
             String color = textField6.getValue();
+
             SampleItem selectedItem = (SampleItem) comboBox.getValue();
             String gama = selectedItem != null ? selectedItem.label() : null;
+
             SampleItem selectedItem2 = (SampleItem) comboBox2.getValue();
             String cantidadCuerdas = selectedItem2 != null ? selectedItem2.label() : null;
+
             SampleItem selectedItem3 = (SampleItem) comboBox3.getValue();
             String tipo = selectedItem3 != null ? selectedItem3.label() : null;
 
@@ -152,6 +156,8 @@ public class CuerdaView extends Composite<VerticalLayout> {
             Cuerda cuerda = new Cuerda();
 
             // Validar que los campos no estén vacíos antes de guardar
+
+                cuerda.setCategoria("Cuerda");
             cuerda.setNombre(nombre);
             cuerda.setCodigo(codigo);
             cuerda.setPrecio(precio);
@@ -173,8 +179,12 @@ public class CuerdaView extends Composite<VerticalLayout> {
 
         });
 
-        buttonSecondary.setText("Cancelar");
-        buttonSecondary.setWidth("min-content");
+        btcancelar.setText("Cancelar");
+        btcancelar.setWidth("min-content");
+        btcancelar.addClickListener(event -> {
+            UI.getCurrent().navigate("instrumento");
+        });
+
         getContent().add(layoutColumn2);
         layoutColumn2.add(layoutRow);
         layoutRow.add(textField);
@@ -191,7 +201,7 @@ public class CuerdaView extends Composite<VerticalLayout> {
         layoutColumn2.add(comboBox3);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
-        layoutRow5.add(buttonSecondary);
+        layoutRow5.add(btcancelar);
     }
 
     record SampleItem(String value, String label, Boolean disabled) {

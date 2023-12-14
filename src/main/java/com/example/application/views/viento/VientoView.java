@@ -6,6 +6,7 @@ import com.example.application.views.nuevoinstrumento.NuevoInstrumentoView;
 import com.example.models.Percusion;
 import com.example.models.Viento;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -44,7 +45,7 @@ public class VientoView extends Composite<VerticalLayout> {
         ComboBox comboBox = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
-        Button buttonSecondary = new Button();
+        Button btcancelar = new Button();
 
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
@@ -131,6 +132,7 @@ public class VientoView extends Composite<VerticalLayout> {
                 String marca = textField5.getValue();
                 String color = textField6.getValue();
                 String material = textField7.getValue();
+
                 SampleItem selectedItem = (SampleItem) comboBox.getValue();
                 String gama = selectedItem != null ? selectedItem.label() : null;
 
@@ -139,6 +141,8 @@ public class VientoView extends Composite<VerticalLayout> {
                 Viento viento = new Viento();
 
                 // Validar que los campos no estén vacíos antes de guardar
+
+                viento.setCategoria("Viento");
                 viento.setNombre(nombre);
                 viento.setCodigo(codigo);
                 viento.setPrecio(precio);
@@ -151,6 +155,7 @@ public class VientoView extends Composite<VerticalLayout> {
                 Util.listaProducto.add(viento);
 
                 // Navegar a la vista de productos después de guardar
+
                 getUI().ifPresent(ui -> ui.navigate("instrumento"));
 
             }else{
@@ -159,8 +164,12 @@ public class VientoView extends Composite<VerticalLayout> {
 
         });
 
-        buttonSecondary.setText("Cancelar");
-        buttonSecondary.setWidth("min-content");
+        btcancelar.setText("Cancelar");
+        btcancelar.setWidth("min-content");
+        btcancelar.addClickListener(event -> {
+            UI.getCurrent().navigate("instrumento");
+        });
+
         getContent().add(layoutColumn2);
         layoutColumn2.add(layoutRow);
         layoutRow.add(textField);
@@ -176,7 +185,7 @@ public class VientoView extends Composite<VerticalLayout> {
         layoutRow4.add(comboBox);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
-        layoutRow5.add(buttonSecondary);
+        layoutRow5.add(btcancelar);
 
     }
 
