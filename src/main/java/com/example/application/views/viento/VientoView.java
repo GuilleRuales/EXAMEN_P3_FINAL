@@ -1,10 +1,8 @@
 package com.example.application.views.viento;
 
-import com.example.Utils.Util;
+import com.example.application.services.ProductoService;
 import com.example.application.views.MainLayout;
-import com.example.application.views.nuevoinstrumento.NuevoInstrumentoView;
-import com.example.models.Percusion;
-import com.example.models.Viento;
+import com.example.application.models.Viento;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -16,9 +14,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 
 import java.util.ArrayList;
@@ -27,22 +23,37 @@ import java.util.List;
 @PageTitle("Viento")
 @Route(value = "viento", layout = MainLayout.class)
 @Uses(Icon.class)
-public class VientoView extends Composite<VerticalLayout> {
+public class VientoView extends Composite<VerticalLayout> implements HasUrlParameter<String> {
 
-    public VientoView() {
+    private ProductoService productoService;
+
+    Viento vientoEditar;
+    boolean isNew = true;
+
+    TextField nombre;
+    TextField codigo;
+    TextField precio;
+    TextField stock;
+    TextField marca;
+    TextField color;
+    ComboBox gama;
+    public VientoView(ProductoService productoService) {
+
+        this.productoService = productoService;
+
         VerticalLayout layoutColumn2 = new VerticalLayout();
         HorizontalLayout layoutRow = new HorizontalLayout();
-        TextField textField = new TextField();
-        TextField textField2 = new TextField();
+        nombre = new TextField();
+        codigo = new TextField();
         HorizontalLayout layoutRow2 = new HorizontalLayout();
-        TextField textField3 = new TextField();
-        TextField textField4 = new TextField();
+        precio = new TextField();
+        stock = new TextField();
         HorizontalLayout layoutRow3 = new HorizontalLayout();
-        TextField textField5 = new TextField();
-        TextField textField6 = new TextField();
+        marca = new TextField();
+        color = new TextField();
         HorizontalLayout layoutRow4 = new HorizontalLayout();
         TextField textField7 = new TextField();
-        ComboBox comboBox = new ComboBox();
+        gama = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
         Button btcancelar = new Button();
@@ -57,40 +68,40 @@ public class VientoView extends Composite<VerticalLayout> {
         layoutRow.setWidth("100%");
         layoutRow.getStyle().set("flex-grow", "1");
 
-        textField.setLabel("Nombre");
-        textField.setWidth("380px");
-        textField.setRequired(true);
-        textField.setErrorMessage("Campo Obligatorio");
-        textField2.setLabel("Codigo");
-        textField2.setWidth("380px");
-        textField2.setRequired(true);
-        textField2.setErrorMessage("Campo Obligatorio");
+        nombre.setLabel("Nombre");
+        nombre.setWidth("380px");
+        nombre.setRequired(true);
+        nombre.setErrorMessage("Campo Obligatorio");
+        codigo.setLabel("Codigo");
+        codigo.setWidth("380px");
+        codigo.setRequired(true);
+        codigo.setErrorMessage("Campo Obligatorio");
         layoutRow2.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow2);
         layoutRow2.addClassName(Gap.MEDIUM);
         layoutRow2.setWidth("100%");
         layoutRow2.getStyle().set("flex-grow", "1");
-        textField3.setLabel("Precio");
-        textField3.setWidth("380px");
-        textField3.setRequired(true);
-        textField3.setErrorMessage("Campo Obligatorio");
-        textField4.setLabel("Stock");
-        textField4.setWidth("380px");
-        textField4.setRequired(true);
-        textField4.setErrorMessage("Campo Obligatorio");
+        precio.setLabel("Precio");
+        precio.setWidth("380px");
+        precio.setRequired(true);
+        precio.setErrorMessage("Campo Obligatorio");
+        stock.setLabel("Stock");
+        stock.setWidth("380px");
+        stock.setRequired(true);
+        stock.setErrorMessage("Campo Obligatorio");
         layoutRow3.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow3);
         layoutRow3.addClassName(Gap.MEDIUM);
         layoutRow3.setWidth("100%");
         layoutRow3.getStyle().set("flex-grow", "1");
-        textField5.setLabel("Marca");
-        textField5.setWidth("380px");
-        textField5.setRequired(true);
-        textField5.setErrorMessage("Campo Obligatorio");
-        textField6.setLabel("Color");
-        textField6.setWidth("380px");
-        textField6.setRequired(true);
-        textField6.setErrorMessage("Campo Obligatorio");
+        marca.setLabel("Marca");
+        marca.setWidth("380px");
+        marca.setRequired(true);
+        marca.setErrorMessage("Campo Obligatorio");
+        color.setLabel("Color");
+        color.setWidth("380px");
+        color.setRequired(true);
+        color.setErrorMessage("Campo Obligatorio");
         layoutRow4.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow4);
         layoutRow4.addClassName(Gap.MEDIUM);
@@ -101,11 +112,11 @@ public class VientoView extends Composite<VerticalLayout> {
         textField7.setRequired(true);
         textField7.setErrorMessage("Campo Obligatorio");
 
-        comboBox.setLabel("Gama");
-        comboBox.setWidth("380px");
-        setComboBoxSampleData(comboBox);
-        comboBox.setRequired(true);
-        comboBox.setErrorMessage("Campo Obligatorio");
+        gama.setLabel("Gama");
+        gama.setWidth("380px");
+        setComboBoxSampleData(gama);
+        gama.setRequired(true);
+        gama.setErrorMessage("Campo Obligatorio");
 
         layoutRow5.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow5);
@@ -121,42 +132,58 @@ public class VientoView extends Composite<VerticalLayout> {
 
             // Obtener los valores de los campos y guardar en la lista de productos
 
-            if (!textField.isEmpty() && !textField2.isEmpty() && !textField3.isEmpty()
-                    && !textField4.isEmpty() && !textField5.isEmpty() && !textField6.isEmpty()
-                    && !textField7.isEmpty() && !comboBox.isEmpty()
+            if (!nombre.isEmpty() && !codigo.isEmpty() && !precio.isEmpty()
+                    && !stock.isEmpty() && !marca.isEmpty() && !color.isEmpty()
+                    && !textField7.isEmpty() && !gama.isEmpty()
             ){
-                String nombre = textField.getValue();
-                String codigo = textField2.getValue();
-                double precio = Float.parseFloat(textField3.getValue());
-                Integer stock = Integer.valueOf(textField4.getValue());
-                String marca = textField5.getValue();
-                String color = textField6.getValue();
+                String nombre = this.nombre.getValue();
+                String codigo = this.codigo.getValue();
+                double precio = Float.parseFloat(this.precio.getValue());
+                Integer stock = Integer.valueOf(this.stock.getValue());
+                String marca = this.marca.getValue();
+                String color = this.color.getValue();
                 String material = textField7.getValue();
 
-                SampleItem selectedItem = (SampleItem) comboBox.getValue();
+                SampleItem selectedItem = (SampleItem) gama.getValue();
                 String gama = selectedItem != null ? selectedItem.label() : null;
 
-                // Crear una nueva instancia de Producto
+                if (isNew)  {
+                    if(!codigo.isEmpty()){
 
-                Viento viento = new Viento();
+                    // Crear una nueva instancia de Producto
 
-                // Validar que los campos no estén vacíos antes de guardar
+                    Viento viento = new Viento();
 
-                viento.setCategoria("Viento");
-                viento.setNombre(nombre);
-                viento.setCodigo(codigo);
-                viento.setPrecio(precio);
-                viento.setStock(stock);
-                viento.setMarca(marca);
-                viento.setColor(color);
-                viento.setMaterial(material);
-                viento.setCalidad(gama);
+                    // Validar que los campos no estén vacíos antes de guardar
 
-                Util.listaProducto.add(viento);
+                        viento.setCategoria("Viento");
+                        viento.setNombre(nombre);
+                        viento.setCodigo(codigo);
+                        viento.setPrecio(precio);
+                        viento.setStock(stock);
+                        viento.setMarca(marca);
+                        viento.setColor(color);
+                        viento.setMaterial(material);
+                        viento.setCalidad(gama);
 
-                // Navegar a la vista de productos después de guardar
+                        productoService.agregarProducto(viento);
 
-                getUI().ifPresent(ui -> ui.navigate("instrumento"));
+                        // Navegar a la vista de productos después de guardar
+
+                        getUI().ifPresent(ui -> ui.navigate("instrumento"));
+                    }else{
+                        Notification.show("Error: Debe proporcionar un código de producto");
+                    }
+                }else if (!isNew){
+                    ((Viento) vientoEditar).setNombre(nombre);
+
+                }
+
+
+
+
+
+
 
             }else{
                 Notification.show("Debe llenar todos los campos");
@@ -172,22 +199,53 @@ public class VientoView extends Composite<VerticalLayout> {
 
         getContent().add(layoutColumn2);
         layoutColumn2.add(layoutRow);
-        layoutRow.add(textField);
-        layoutRow.add(textField2);
+        layoutRow.add(nombre);
+        layoutRow.add(codigo);
         layoutColumn2.add(layoutRow2);
-        layoutRow2.add(textField3);
-        layoutRow2.add(textField4);
+        layoutRow2.add(precio);
+        layoutRow2.add(stock);
         layoutColumn2.add(layoutRow3);
-        layoutRow3.add(textField5);
-        layoutRow3.add(textField6);
+        layoutRow3.add(marca);
+        layoutRow3.add(color);
         layoutColumn2.add(layoutRow4);
         layoutRow4.add(textField7);
-        layoutRow4.add(comboBox);
+        layoutRow4.add(gama);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
         layoutRow5.add(btcancelar);
 
     }
+
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoProducto) {
+
+    }
+    /*public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigo) {
+        if (codigo != null){
+            Viento vientoEditar = (Viento) productoService.obtenerPorCodigo(codigo);
+            nombre.setValue(vientoEditar.nombre);
+            this.codigo.setValue(vientoEditar.codigo);
+            precio.setValue(String.valueOf(vientoEditar.precio));
+            stock.setValue(String.valueOf(vientoEditar.stock));
+            marca.setValue(vientoEditar.marca);
+            color.setValue(vientoEditar.color);
+        }
+    }
+
+    */
+    /*
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoProducto) {
+        if (codigo != null) {
+            //codigo.setEnabled(false);
+            isNew = false;
+            vientoEditar = (Viento) productoService.obtenerPorCodigo(codigoProducto);
+            nombre.setValue(vientoEditar.getNombre());
+        }
+    }
+    */
+
+
 
     record SampleItem(String value, String label, Boolean disabled) {
     }

@@ -1,18 +1,26 @@
-package com.example.models;
+package com.example.application.models;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Scanner;
 
+@Document("INVENTARIO")
 public class Producto {
 
+    @Id
+    private String id;
     public String nombre;
-    public String codigo;
     public double precio;
     public int stock;
     public   String marca;
     public   String color;
     public   String calidad;
-    public String tipo;
     public String categoria;
+
+    @Indexed(name = "codigo", unique = true)
+    public String codigo;
 
 
 
@@ -20,8 +28,8 @@ public class Producto {
 
     }
 
-    public Producto(String nombre, String codigo, String marca, String color,
-                    String calidad, double precio, int stock, String tipo, String categoria) {
+    public Producto(String nombre, String codigo, String marca, String color, String material,
+                    String calidad, double precio, int stock, String categoria) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.precio = precio;
@@ -29,7 +37,6 @@ public class Producto {
         this.marca = marca;
         this.color = color;
         this.calidad = calidad;
-        this.tipo = tipo;
         this.categoria = categoria;
     }
 
@@ -89,14 +96,6 @@ public class Producto {
         this.calidad = calidad;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String getPrecioAsString() {
         return String.valueOf(this.precio);
     }
@@ -119,6 +118,15 @@ public class Producto {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public void ingresarDatos(){
 

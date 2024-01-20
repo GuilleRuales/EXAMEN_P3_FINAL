@@ -1,8 +1,13 @@
 package com.example.application.views.instrumento;
 
-import com.example.Utils.Util;
+import com.example.application.Utils.Util;
+import com.example.application.services.ProductoService;
 import com.example.application.views.MainLayout;
-import com.example.models.Producto;
+import com.example.application.views.cuerda.CuerdaView;
+import com.example.application.views.nuevoinstrumento.NuevoInstrumentoView;
+import com.example.application.views.percusion.PercusionView;
+import com.example.application.views.viento.VientoView;
+import com.example.application.models.Producto;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -18,6 +23,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.router.RouteParameters;
 
 
 import java.util.List;
@@ -28,7 +34,11 @@ import java.util.List;
 @Uses(Icon.class)
 public class InstrumentoView extends Composite<VerticalLayout> {
 
-    public InstrumentoView() {
+    private ProductoService productoService;
+    public InstrumentoView(ProductoService productoService) {
+
+        this.productoService = productoService;
+
         Button buttonPrimary = new Button();
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
@@ -47,7 +57,7 @@ public class InstrumentoView extends Composite<VerticalLayout> {
         grid.addColumn(Producto::getStock).setHeader("Stock").setSortable(true).setAutoWidth(true);
         grid.addColumn(Producto::getMarca).setHeader("Marca").setSortable(true).setAutoWidth(true);
         grid.addColumn(Producto::getCalidad).setHeader("Gama").setSortable(true).setAutoWidth(true);
-        grid.addColumn(Producto::getTipo).setHeader("Tipo").setSortable(true).setAutoWidth(true);
+        //grid.addColumn(Producto::getTipo).setHeader("Tipo").setSortable(true).setAutoWidth(true);
 
         grid.addColumn(
                 new ComponentRenderer<>(producto -> {
@@ -56,19 +66,27 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                     botonBorrar.addThemeVariants(ButtonVariant.LUMO_ERROR);
                     botonBorrar.setIcon(new Icon(VaadinIcon.TRASH));
                     botonBorrar.addClickListener(e -> {
-                        Util.listaProducto.remove(producto);
+                        productoService.agregarProducto(producto);
                         grid.getDataProvider().refreshAll();
                     });
-                    /*
                     // Botón para editar
                     Button botonEditar = new Button();
-                    botonEditar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-                    botonEditar.setIcon(new Icon(VaadinIcon.EDIT));
+                    botonEditar.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
                     botonEditar.addClickListener(e -> {
-                        // Aquí el código para editar el producto
-                        // Por ejemplo, abrir un formulario de edición
+                        botonEditar.getUI().ifPresent(ui -> {
+                            String tipoProducto = producto.getCategoria();
+                            if ("Cuerda".equals(tipoProducto)) {
+                                ui.navigate(CuerdaView.class, producto.codigo);
+                            } else if ("Viento".equals(tipoProducto)) {
+                                ui.navigate(VientoView.class, producto.codigo);
+                            } else if ("Percusion".equals(tipoProducto)) {
+                                ui.navigate(PercusionView.class, producto.codigo);;
+                            }
+                        });
                     });
+                    botonEditar.setIcon(new Icon(VaadinIcon.EDIT));
 
+                    /*
                     // Botón para ver
                     Button botonVer = new Button();
                     botonVer.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
@@ -80,11 +98,11 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                     */
                     // Añadir los botones a un layout horizontal
 
-                    HorizontalLayout buttons = new HorizontalLayout(botonBorrar);
+                    HorizontalLayout buttons = new HorizontalLayout(botonBorrar,botonEditar);
                     return buttons;
                 })).setHeader("Manage").setAutoWidth(true);
 
-        List<Producto> producto = Util.listaProducto;
+        List<Producto> producto = productoService.listaproductos();
         grid.setItems(producto);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         getContent().add(buttonPrimary,grid);

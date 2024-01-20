@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.application.models;
 
 import java.util.Scanner;
 
@@ -9,10 +9,10 @@ public class Viento extends Producto{
     public Viento() {
     }
 
-    public Viento(String nombre, String codigo, String marca, String color, String calidad, double precio,
-                  int stock, String tipo, String material, String categoria) {
-        super(nombre, codigo, marca, color, calidad, precio, stock, tipo, categoria);
-        this.material = material;
+    public Viento(String nombre, String codigo, String marca, String color, String material,
+                  String calidad, double precio, int stock, String categoria, String material1) {
+        super(nombre, codigo, marca, color, material, calidad, precio, stock, categoria);
+        this.material = material1;
     }
 
     public String getMaterial() {

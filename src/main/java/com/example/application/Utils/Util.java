@@ -1,10 +1,6 @@
-package com.example.Utils;
+package com.example.application.Utils;
 
-import com.example.models.Producto;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.example.application.models.Producto;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,21 +1,31 @@
-package com.example.models;
+package com.example.application.models;
+
 
 import java.util.Scanner;
 
-public class Percusion extends Producto{
+public class Cuerda extends Producto {
 
+
+    int cantidadCuerdas;
     String tipo;
-    String material;
 
 
-    public Percusion() {
+    public Cuerda() {
     }
 
-    public Percusion(String nombre, String codigo, String marca, String color,
-                     String calidad, double precio, int stock, String tipo, String material, String categoria) {
-        super(nombre, codigo, marca, color, calidad, precio, stock, tipo, categoria);
+    public Cuerda(String nombre, String codigo, String marca, String color, String material, String calidad,
+                  double precio, int stock, String categoria, int cantidadCuerdas, String tipo) {
+        super(nombre, codigo, marca, color, material, calidad, precio, stock, categoria);
+        this.cantidadCuerdas = cantidadCuerdas;
         this.tipo = tipo;
-        this.material = material;
+    }
+
+    public int getCantidadCuerdas() {
+        return cantidadCuerdas;
+    }
+
+    public void setCantidadCuerdas(int cantidadCuerdas) {
+        this.cantidadCuerdas = cantidadCuerdas;
     }
 
     public String getTipo() {
@@ -24,14 +34,6 @@ public class Percusion extends Producto{
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
     }
 
     @Override
@@ -52,11 +54,9 @@ public class Percusion extends Producto{
         this.color = sc.next();
         System.out.println("Ingrese la calidad del producto");
         this.calidad = sc.next();
+        System.out.println("Ingrese la cantidad de cuerdas del producto");
+        this.cantidadCuerdas= sc.nextInt();
         System.out.println("Ingrese el tipo del producto (Acustico o Electrico)");
         this.calidad = sc.next();
-        System.out.println("Ingrese el material del instrumento");
-        this.calidad = sc.next();
-
     }
-
 }

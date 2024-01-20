@@ -1,10 +1,8 @@
 package com.example.application.views.nuevoinstrumento;
 
 
-import com.example.Utils.Util;
 import com.example.application.views.MainLayout;
-import com.example.models.Cuerda;
-import com.example.models.Producto;
+import com.example.application.models.Producto;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -73,6 +71,8 @@ public class NuevoInstrumentoView extends Composite<VerticalLayout> {
 
             Producto producto = new Producto();
             producto.setCategoria(categoria);
+
+            System.out.println("Categoria: "+categoria);
 
             int tipo = ((SampleItem)cbTipoInstrumento.getValue()).value;
 

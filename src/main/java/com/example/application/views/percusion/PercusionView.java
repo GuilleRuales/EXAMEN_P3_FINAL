@@ -1,11 +1,8 @@
 package com.example.application.views.percusion;
 
-import com.example.Utils.Util;
+import com.example.application.Utils.Util;
 import com.example.application.views.MainLayout;
-import com.example.application.views.nuevoinstrumento.NuevoInstrumentoView;
-import com.example.models.Cuerda;
-import com.example.models.Percusion;
-import com.example.models.Producto;
+import com.example.application.models.Percusion;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -17,11 +14,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
-import com.vaadin.flow.theme.material.Material;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +23,7 @@ import java.util.List;
 @PageTitle("Percusion")
 @Route(value = "percusion", layout = MainLayout.class)
 @Uses(Icon.class)
-public class PercusionView extends Composite<VerticalLayout> {
+public class PercusionView extends Composite<VerticalLayout> implements HasUrlParameter<String> {
 
     public PercusionView() {
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -200,6 +194,11 @@ public class PercusionView extends Composite<VerticalLayout> {
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
         layoutRow5.add(btcancelar);
+    }
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigo) {
+
     }
 
     record SampleItem(String value, String label, Boolean disabled) {

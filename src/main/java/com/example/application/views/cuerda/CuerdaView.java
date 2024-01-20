@@ -1,11 +1,8 @@
 package com.example.application.views.cuerda;
 
-import com.example.Utils.Util;
+import com.example.application.Utils.Util;
 import com.example.application.views.MainLayout;
-import com.example.application.views.nuevoinstrumento.NuevoInstrumentoView;
-import com.example.models.Cuerda;
-import com.example.models.Percusion;
-import com.example.models.Viento;
+import com.example.application.models.Cuerda;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -16,11 +13,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +22,7 @@ import java.util.List;
 @PageTitle("Cuerda")
 @Route(value = "cuerda", layout = MainLayout.class)
 @Uses(Icon.class)
-public class CuerdaView extends Composite<VerticalLayout> {
+public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParameter<String> {
 
     public CuerdaView() {
         VerticalLayout layoutColumn2 = new VerticalLayout();
@@ -202,6 +196,11 @@ public class CuerdaView extends Composite<VerticalLayout> {
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
         layoutRow5.add(btcancelar);
+    }
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigo) {
+
     }
 
     record SampleItem(String value, String label, Boolean disabled) {
