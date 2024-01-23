@@ -1,7 +1,9 @@
 package com.example.application.services;
 
+import com.example.application.models.Cuerda;
+import com.example.application.models.Percusion;
 import com.example.application.models.Producto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.application.models.Viento;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,25 +51,73 @@ public class ProductoService {
             productoRepository.delete(producto);
         } catch (Exception e) {
             System.out.println("No se puede encontrar el producto a borrar");
+            System.out.println(e);
         }
     }
 
-    public void editarProducto(String codigo, Producto producto) {
+    public void editarProductoViento (String codigo, Viento viento) {
+
         try {
-            Producto productoEditar = productoRepository.findByCodigo(codigo);
-            if (codigo != null) {
-                productoEditar.setNombre(producto.getNombre());
-                productoEditar.setPrecio(producto.getPrecio());
-                productoEditar.setMarca(producto.getMarca());
-                productoEditar.setStock(producto.getStock());
-                productoEditar.setColor(producto.getColor());
-                //productoEditar.setMaterial(producto.getMaterial());
-            }
+
+            Viento vientoEditar = (Viento) productoRepository.findByCodigo(codigo);
+            vientoEditar.nombre = viento.nombre;
+            vientoEditar.precio = viento.precio;
+            vientoEditar.stock = viento.stock;
+            vientoEditar.marca = viento.marca;
+            vientoEditar.color = viento.color;
+            vientoEditar.material = viento.material;
+            vientoEditar.calidad = viento.calidad;
+
+            productoRepository.save(vientoEditar);
+
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("No se puede encontrar el producto a ser editado");
         }
     }
 
+    public void editarProductoPercusion (String codigo, Percusion percusion) {
 
+        try {
+
+            Percusion percusionEditar = (Percusion) productoRepository.findByCodigo(codigo);
+            percusionEditar.nombre = percusion.nombre;
+            percusionEditar.precio = percusion.precio;
+            percusionEditar.stock = percusion.stock;
+            percusionEditar.marca = percusion.marca;
+            percusionEditar.color = percusion.color;
+            percusionEditar.material = percusion.material;
+            percusionEditar.tipo = percusion.tipo;
+            percusionEditar.calidad = percusion.calidad;
+
+            productoRepository.save(percusionEditar);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("No se puede encontrar el producto a ser editado");
+        }
+    }
+
+    public void editarProductoCuerda (String codigo, Cuerda cuerda) {
+
+        try {
+
+            Cuerda cuerdaEditar = (Cuerda) productoRepository.findByCodigo(codigo);
+            cuerdaEditar.nombre = cuerda.nombre;
+            cuerdaEditar.precio = cuerda.precio;
+            cuerdaEditar.stock = cuerda.stock;
+            cuerdaEditar.marca = cuerda.marca;
+            cuerdaEditar.color = cuerda.color;
+            cuerdaEditar.cantidadCuerdas = cuerda.cantidadCuerdas;
+            cuerdaEditar.tipo = cuerda.tipo;
+            cuerdaEditar.calidad = cuerda.calidad;
+
+            productoRepository.save(cuerdaEditar);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("No se puede encontrar el producto a ser editado");
+        }
+    }
 
 }

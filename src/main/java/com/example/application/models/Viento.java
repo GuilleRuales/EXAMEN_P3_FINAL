@@ -4,15 +4,15 @@ import java.util.Scanner;
 
 public class Viento extends Producto{
 
-    String material;
+    public String material;
 
     public Viento() {
     }
 
-    public Viento(String nombre, String codigo, String marca, String color, String material,
-                  String calidad, double precio, int stock, String categoria, String material1) {
+    public Viento(String nombre, String codigo, String marca, String color, String calidad,
+                  double precio, int stock, String categoria, String material) {
         super(nombre, codigo, marca, color, material, calidad, precio, stock, categoria);
-        this.material = material1;
+        this.material = material;
     }
 
     public String getMaterial() {
@@ -41,6 +41,8 @@ public class Viento extends Producto{
         this.color = sc.next();
         System.out.println("Ingrese la calidad del producto");
         this.calidad = sc.next();
+        System.out.println("Ingrese el material del producto");
+        this.material = sc.next();
 
 
     }

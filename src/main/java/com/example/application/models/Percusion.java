@@ -4,17 +4,17 @@ import java.util.Scanner;
 
 public class Percusion extends Producto{
 
-    String tipo;
-    String material;
+    public String tipo;
+    public String material;
 
     public Percusion() {
     }
 
     public Percusion(String nombre, String codigo, String marca, String color, String material, String calidad,
-                     double precio, int stock, String categoria, String tipo, String material1) {
+                     double precio, int stock, String categoria, String tipo) {
         super(nombre, codigo, marca, color, material, calidad, precio, stock, categoria);
         this.tipo = tipo;
-        this.material = material1;
+        this.material = material;
     }
 
     public String getTipo() {

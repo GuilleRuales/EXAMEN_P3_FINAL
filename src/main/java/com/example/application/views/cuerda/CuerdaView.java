@@ -1,6 +1,7 @@
 package com.example.application.views.cuerda;
 
 import com.example.application.Utils.Util;
+import com.example.application.services.ProductoService;
 import com.example.application.views.MainLayout;
 import com.example.application.models.Cuerda;
 import com.vaadin.flow.component.Composite;
@@ -24,25 +25,48 @@ import java.util.List;
 @Uses(Icon.class)
 public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParameter<String> {
 
-    public CuerdaView() {
+    private ProductoService productoService;
+    Boolean isNew = true;
+    SampleItem sampleItem;
+    List<SampleItem> sampleItems = new ArrayList<>();
+    SampleItem sampleItem2;
+    List<SampleItem> sampleItems2 = new ArrayList<>();
+    SampleItem sampleItem3;
+    List<SampleItem> sampleItems3 = new ArrayList<>();
+
+    Cuerda cuerdaEditar;
+    TextField nombre;
+    TextField codigo;
+    TextField precio;
+    TextField stock;
+    TextField marca;
+    TextField color;
+    ComboBox cbGama;
+    ComboBox cbCuerdas;
+    ComboBox cbTipo;
+
+
+    public CuerdaView(ProductoService productoService) {
+
+        this.productoService = productoService;
+
         VerticalLayout layoutColumn2 = new VerticalLayout();
         HorizontalLayout layoutRow = new HorizontalLayout();
-        TextField textField = new TextField();
-        TextField textField2 = new TextField();
+        nombre = new TextField();
+        codigo = new TextField();
         HorizontalLayout layoutRow2 = new HorizontalLayout();
-        TextField textField3 = new TextField();
-        TextField textField4 = new TextField();
+        precio = new TextField();
+        stock = new TextField();
         HorizontalLayout layoutRow3 = new HorizontalLayout();
-        TextField textField5 = new TextField();
-        TextField textField6 = new TextField();
+        marca = new TextField();
+        color = new TextField();
         HorizontalLayout layoutRow4 = new HorizontalLayout();
-        ComboBox comboBox = new ComboBox();
-        ComboBox comboBox2 = new ComboBox();
-        ComboBox comboBox3 = new ComboBox();
+        cbGama = new ComboBox();
+        cbCuerdas = new ComboBox();
+        cbTipo = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
         Button btcancelar = new Button();
-
         getContent().setWidth("100%");
         getContent().getStyle().set("flex-grow", "1");
         layoutColumn2.setWidth("100%");
@@ -52,64 +76,64 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
         layoutRow.addClassName(Gap.MEDIUM);
         layoutRow.setWidth("100%");
         layoutRow.getStyle().set("flex-grow", "1");
-        textField.setLabel("Nombre");
-        textField.setWidth("380px");
-        textField.setRequired(true);
-        textField.setErrorMessage("Campo Obligatorio");
-        textField2.setLabel("Codigo");
-        textField2.setWidth("380px");
-        textField2.setRequired(true);
-        textField2.setErrorMessage("Campo Obligatorio");
+        nombre.setLabel("Nombre");
+        nombre.setWidth("380px");
+        nombre.setRequired(true);
+        nombre.setErrorMessage("Campo Obligatorio");
+        codigo.setLabel("Codigo");
+        codigo.setWidth("380px");
+        codigo.setRequired(true);
+        codigo.setErrorMessage("Campo Obligatorio");
         layoutRow2.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow2);
         layoutRow2.addClassName(Gap.MEDIUM);
         layoutRow2.setWidth("100%");
         layoutRow2.getStyle().set("flex-grow", "1");
-        textField3.setLabel("Precio");
-        textField3.setWidth("380px");
-        textField3.setRequired(true);
-        textField3.setErrorMessage("Campo Obligatorio");
-        textField4.setLabel("Stock");
-        textField4.setWidth("380px");
-        textField4.setRequired(true);
-        textField4.setErrorMessage("Campo Obligatorio");
+        precio.setLabel("Precio");
+        precio.setWidth("380px");
+        precio.setRequired(true);
+        precio.setErrorMessage("Campo Obligatorio");
+        stock.setLabel("Stock");
+        stock.setWidth("380px");
+        stock.setRequired(true);
+        stock.setErrorMessage("Campo Obligatorio");
         layoutRow3.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow3);
         layoutRow3.addClassName(Gap.MEDIUM);
         layoutRow3.setWidth("100%");
         layoutRow3.getStyle().set("flex-grow", "1");
-        textField5.setLabel("Marca");
-        textField5.setWidth("380px");
-        textField5.setRequired(true);
-        textField5.setErrorMessage("Campo Obligatorio");
-        textField6.setLabel("Color");
-        textField6.setWidth("380px");
-        textField6.setRequired(true);
-        textField6.setErrorMessage("Campo Obligatorio");
+        marca.setLabel("Marca");
+        marca.setWidth("380px");
+        marca.setRequired(true);
+        marca.setErrorMessage("Campo Obligatorio");
+        color.setLabel("Color");
+        color.setWidth("380px");
+        color.setRequired(true);
+        color.setErrorMessage("Campo Obligatorio");
         layoutRow4.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow4);
         layoutRow4.addClassName(Gap.MEDIUM);
         layoutRow4.setWidth("100%");
         layoutRow4.getStyle().set("flex-grow", "1");
 
-        comboBox.setLabel("Gama");
-        comboBox.setWidth("380px");
-        comboBox.setHeight("70px");
-        setComboBoxSampleData(comboBox);
-        comboBox.setRequired(true);
-        comboBox.setErrorMessage("Campo Obligatorio");
+        cbGama.setLabel("Gama");
+        cbGama.setWidth("380px");
+        cbGama.setHeight("70px");
+        setComboBoxSampleData(cbGama);
+        cbGama.setRequired(true);
+        cbGama.setErrorMessage("Campo Obligatorio");
 
-        comboBox2.setLabel("No Cuerdas");
-        comboBox2.setWidth("380px");
-        setComboBox2SampleData(comboBox2);
-        comboBox2.setRequired(true);
-        comboBox2.setErrorMessage("Campo Obligatorio");
+        cbCuerdas.setLabel("No Cuerdas");
+        cbCuerdas.setWidth("380px");
+        setComboBox2SampleData(cbCuerdas);
+        cbCuerdas.setRequired(true);
+        cbCuerdas.setErrorMessage("Campo Obligatorio");
 
-        comboBox3.setLabel("Tipo");
-        comboBox3.setWidth("380px");
-        setComboBox3SampleData(comboBox3);
-        comboBox3.setRequired(true);
-        comboBox3.setErrorMessage("Campo Obligatorio");
+        cbTipo.setLabel("Tipo");
+        cbTipo.setWidth("380px");
+        setComboBox3SampleData(cbTipo);
+        cbTipo.setRequired(true);
+        cbTipo.setErrorMessage("Campo Obligatorio");
 
         layoutRow5.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow5);
@@ -123,52 +147,83 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
 
         guardar.addClickListener(event -> {
 
-            if (!textField.isEmpty() && !textField2.isEmpty() && !textField3.isEmpty()
-                    && !textField4.isEmpty() && !textField5.isEmpty() && !textField6.isEmpty()
-                    && !comboBox.isEmpty() && !comboBox2.isEmpty() && !comboBox3.isEmpty()
-            ){
-            // Obtener los valores de los campos y guardar en la lista de productos
+            if (!nombre.isEmpty() && !codigo.isEmpty() && !precio.isEmpty()
+                    && !stock.isEmpty() && !marca.isEmpty() && !color.isEmpty()
+                    && !cbGama.isEmpty() && !cbCuerdas.isEmpty() && !cbTipo.isEmpty())
+            {
 
-            String nombre = textField.getValue();
-            String codigo = textField2.getValue();
-            double precio = Float.parseFloat(textField3.getValue());
-            Integer stock = Integer.valueOf(textField4.getValue());
-            String marca = textField5.getValue();
-            String color = textField6.getValue();
+                if (isNew) {
 
-            SampleItem selectedItem = (SampleItem) comboBox.getValue();
-            String gama = selectedItem != null ? selectedItem.label() : null;
+                    // Obtener los valores de los campos y guardar en la lista de productos
 
-            SampleItem selectedItem2 = (SampleItem) comboBox2.getValue();
-            String cantidadCuerdas = selectedItem2 != null ? selectedItem2.label() : null;
+                    String nombre = this.nombre.getValue();
+                    String codigo = this.codigo.getValue();
+                    double precio = Float.parseFloat(this.precio.getValue());
+                    Integer stock = Integer.valueOf(this.stock.getValue());
+                    String marca = this.marca.getValue();
+                    String color = this.color.getValue();
 
-            SampleItem selectedItem3 = (SampleItem) comboBox3.getValue();
-            String tipo = selectedItem3 != null ? selectedItem3.label() : null;
+                    SampleItem selectedItem = (SampleItem) cbGama.getValue();
+                    String gama = selectedItem != null ? selectedItem.label() : null;
 
-            // Crear una nueva instancia de Producto
+                    SampleItem selectedItem2 = (SampleItem) cbCuerdas.getValue();
+                    String cantidadCuerdas = selectedItem2 != null ? selectedItem2.label() : null;
 
-            Cuerda cuerda = new Cuerda();
+                    SampleItem selectedItem3 = (SampleItem) cbTipo.getValue();
+                    String tipo = selectedItem3 != null ? selectedItem3.label() : null;
 
-            // Validar que los campos no estén vacíos antes de guardar
+                    // Crear una nueva instancia de Cuerda
 
-                cuerda.setCategoria("Cuerda");
-            cuerda.setNombre(nombre);
-            cuerda.setCodigo(codigo);
-            cuerda.setPrecio(precio);
-            cuerda.setStock(stock);
-            cuerda.setMarca(marca);
-            cuerda.setColor(color);
-            cuerda.setCalidad(gama);
-            cuerda.setTipo(tipo);
-            cuerda.setCantidadCuerdas(Integer.parseInt(cantidadCuerdas));
+                    Cuerda cuerda = new Cuerda();
 
-            Util.listaProducto.add(cuerda);
+                    // Validar que los campos no estén vacíos antes de guardar
 
-            // Navegar a la vista de productos después de guardar
-            getUI().ifPresent(ui -> ui.navigate("instrumento"));
+                    cuerda.setCategoria("Cuerda");
+                    cuerda.setNombre(nombre);
+                    cuerda.setCodigo(codigo);
+                    cuerda.setPrecio(precio);
+                    cuerda.setStock(stock);
+                    cuerda.setMarca(marca);
+                    cuerda.setColor(color);
+                    cuerda.setCalidad(gama);
+                    cuerda.setTipo(tipo);
+                    cuerda.setCantidadCuerdas(cantidadCuerdas);
+
+                    productoService.agregarProducto(cuerda);
+
+                }else{
+
+                    System.out.println("Estoy en edicion");
+                    System.out.println(cuerdaEditar.nombre);
+                    cuerdaEditar.nombre = nombre.getValue();
+                    cuerdaEditar.precio = Float.parseFloat(this.precio.getValue());
+                    cuerdaEditar.stock = Integer.parseInt(stock.getValue());
+                    cuerdaEditar.marca = marca.getValue();
+                    cuerdaEditar.color = color.getValue();
+
+                    SampleItem selectedItem = (SampleItem) cbGama.getValue();
+                    String gama = selectedItem != null ? selectedItem.label() : null;
+                    cuerdaEditar.calidad = gama;
+
+                    SampleItem selectedItem2 = (SampleItem) cbCuerdas.getValue();
+                    String cantidadCuerdas = selectedItem2 != null ? selectedItem2.label() : null;
+                    cuerdaEditar.cantidadCuerdas = cantidadCuerdas;
+
+                    SampleItem selectedItem3 = (SampleItem) cbTipo.getValue();
+                    String tipo = selectedItem3 != null ? selectedItem3.label() : null;
+                    cuerdaEditar.tipo = tipo;
+
+                    productoService.editarProductoCuerda(cuerdaEditar.codigo,cuerdaEditar);
+
+                }
+
+                // Navegar a la vista de productos después de guardar
+                getUI().ifPresent(ui -> ui.navigate("instrumento"));
 
             }else{
+
                 Notification.show("Debe llenar todos los campos");
+
             }
 
         });
@@ -177,29 +232,67 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
         btcancelar.setWidth("min-content");
         btcancelar.addClickListener(event -> {
             UI.getCurrent().navigate("instrumento");
+
         });
 
         getContent().add(layoutColumn2);
         layoutColumn2.add(layoutRow);
-        layoutRow.add(textField);
-        layoutRow.add(textField2);
+        layoutRow.add(nombre);
+        layoutRow.add(codigo);
         layoutColumn2.add(layoutRow2);
-        layoutRow2.add(textField3);
-        layoutRow2.add(textField4);
+        layoutRow2.add(precio);
+        layoutRow2.add(stock);
         layoutColumn2.add(layoutRow3);
-        layoutRow3.add(textField5);
-        layoutRow3.add(textField6);
+        layoutRow3.add(marca);
+        layoutRow3.add(color);
         layoutColumn2.add(layoutRow4);
-        layoutRow4.add(comboBox);
-        layoutRow4.add(comboBox2);
-        layoutColumn2.add(comboBox3);
+        layoutRow4.add(cbGama);
+        layoutRow4.add(cbCuerdas);
+        layoutColumn2.add(cbTipo);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
         layoutRow5.add(btcancelar);
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigo) {
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoEditar) {
+        if (codigoEditar != null){
+
+            isNew = false;
+            cuerdaEditar = (Cuerda) productoService.obtenerPorCodigo(codigoEditar);
+            nombre.setValue(cuerdaEditar.nombre);
+            codigo.setValue(cuerdaEditar.codigo);
+            codigo.setEnabled(false);
+            precio.setValue(String.valueOf(cuerdaEditar.precio));
+            stock.setValue(String.valueOf(cuerdaEditar.stock));
+            marca.setValue(cuerdaEditar.marca);
+            color.setValue(cuerdaEditar.color);
+
+
+            sampleItem = sampleItems.stream()
+                    .filter(x->x.label.equals(cuerdaEditar.getCalidad()))
+                    .findAny()
+                    .orElseThrow();
+            cbGama.setValue(sampleItem);
+
+            sampleItem2 = sampleItems2.stream()
+                    .filter(x->x.label.equals(cuerdaEditar.getCantidadCuerdas()))
+                    .findAny()
+                    .orElseThrow();
+            cbCuerdas.setValue(sampleItem2);
+
+            sampleItem3 = sampleItems3.stream()
+                    .filter(x->x.label.equals(cuerdaEditar.getTipo()))
+                    .findAny()
+                    .orElseThrow();
+            cbTipo.setValue(sampleItem3);
+
+            //cbTipo.setValue(cuerdaEditar.tipo);
+
+        }else{
+            isNew = true;
+            System.out.println("codigo nulo");
+        }
 
     }
 
@@ -207,7 +300,7 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
     }
 
     private void setComboBoxSampleData(ComboBox comboBox) {
-        List<SampleItem> sampleItems = new ArrayList<>();
+
         sampleItems.add(new SampleItem("alta", "Alta", null));
         sampleItems.add(new SampleItem("media", "Media", null));
         sampleItems.add(new SampleItem("baja", "Baja", Boolean.TRUE));
@@ -216,18 +309,18 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
     }
 
     private void setComboBox2SampleData(ComboBox comboBox2) {
-        List<SampleItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new SampleItem("4", "4", null));
-        sampleItems.add(new SampleItem("6", "6", null));
-        comboBox2.setItems(sampleItems);
+
+        sampleItems2.add(new SampleItem("4", "4", null));
+        sampleItems2.add(new SampleItem("6", "6", null));
+        comboBox2.setItems(sampleItems2);
         comboBox2.setItemLabelGenerator(item -> ((SampleItem) item).label());
     }
 
     private void setComboBox3SampleData(ComboBox comboBox3) {
-        List<SampleItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new SampleItem("acustico", "Acustico", null));
-        sampleItems.add(new SampleItem("electrico", "Electrico", null));
-        comboBox3.setItems(sampleItems);
+
+        sampleItems3.add(new SampleItem("acustico", "Acustico", null));
+        sampleItems3.add(new SampleItem("electrico", "Electrico", null));
+        comboBox3.setItems(sampleItems3);
         comboBox3.setItemLabelGenerator(item -> ((SampleItem) item).label());
     }
 

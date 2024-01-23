@@ -66,7 +66,7 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                     botonBorrar.addThemeVariants(ButtonVariant.LUMO_ERROR);
                     botonBorrar.setIcon(new Icon(VaadinIcon.TRASH));
                     botonBorrar.addClickListener(e -> {
-                        productoService.agregarProducto(producto);
+                        productoService.borrarProducto(producto.codigo);
                         grid.getDataProvider().refreshAll();
                     });
                     // Botón para editar

@@ -6,25 +6,25 @@ import java.util.Scanner;
 public class Cuerda extends Producto {
 
 
-    int cantidadCuerdas;
-    String tipo;
+    public String cantidadCuerdas;
+    public String tipo;
 
 
     public Cuerda() {
     }
 
-    public Cuerda(String nombre, String codigo, String marca, String color, String material, String calidad,
-                  double precio, int stock, String categoria, int cantidadCuerdas, String tipo) {
+    public Cuerda(String nombre, String codigo, String marca, String color, String material,
+                  String calidad, double precio, int stock, String categoria, String cantidadCuerdas, String tipo) {
         super(nombre, codigo, marca, color, material, calidad, precio, stock, categoria);
         this.cantidadCuerdas = cantidadCuerdas;
         this.tipo = tipo;
     }
 
-    public int getCantidadCuerdas() {
+    public String getCantidadCuerdas() {
         return cantidadCuerdas;
     }
 
-    public void setCantidadCuerdas(int cantidadCuerdas) {
+    public void setCantidadCuerdas(String cantidadCuerdas) {
         this.cantidadCuerdas = cantidadCuerdas;
     }
 
@@ -55,7 +55,7 @@ public class Cuerda extends Producto {
         System.out.println("Ingrese la calidad del producto");
         this.calidad = sc.next();
         System.out.println("Ingrese la cantidad de cuerdas del producto");
-        this.cantidadCuerdas= sc.nextInt();
+        this.cantidadCuerdas= sc.next();
         System.out.println("Ingrese el tipo del producto (Acustico o Electrico)");
         this.calidad = sc.next();
     }

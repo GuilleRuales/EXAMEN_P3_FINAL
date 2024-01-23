@@ -3,6 +3,7 @@ package com.example.application.views.viento;
 import com.example.application.services.ProductoService;
 import com.example.application.views.MainLayout;
 import com.example.application.models.Viento;
+import com.example.application.views.cuerda.CuerdaView;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -27,8 +28,13 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
 
     private ProductoService productoService;
 
+    SampleItem sampleItem;
+
+    Boolean isNew = true;
+    List<SampleItem> sampleItems = new ArrayList<>();
+
     Viento vientoEditar;
-    boolean isNew = true;
+
 
     TextField nombre;
     TextField codigo;
@@ -36,7 +42,8 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
     TextField stock;
     TextField marca;
     TextField color;
-    ComboBox gama;
+    TextField material;
+    ComboBox cbgama;
     public VientoView(ProductoService productoService) {
 
         this.productoService = productoService;
@@ -52,10 +59,11 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
         marca = new TextField();
         color = new TextField();
         HorizontalLayout layoutRow4 = new HorizontalLayout();
-        TextField textField7 = new TextField();
-        gama = new ComboBox();
+        material = new TextField();
+        cbgama = new ComboBox();
         HorizontalLayout layoutRow5 = new HorizontalLayout();
         Button guardar = new Button();
+        Button editar = new Button();
         Button btcancelar = new Button();
 
         getContent().setWidth("100%");
@@ -107,16 +115,16 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
         layoutRow4.addClassName(Gap.MEDIUM);
         layoutRow4.setWidth("100%");
         layoutRow4.getStyle().set("flex-grow", "1");
-        textField7.setLabel("Material");
-        textField7.setWidth("380px");
-        textField7.setRequired(true);
-        textField7.setErrorMessage("Campo Obligatorio");
+        material.setLabel("Material");
+        material.setWidth("380px");
+        material.setRequired(true);
+        material.setErrorMessage("Campo Obligatorio");
 
-        gama.setLabel("Gama");
-        gama.setWidth("380px");
-        setComboBoxSampleData(gama);
-        gama.setRequired(true);
-        gama.setErrorMessage("Campo Obligatorio");
+        cbgama.setLabel("Gama");
+        cbgama.setWidth("380px");
+        setComboBoxSampleData(cbgama);
+        cbgama.setRequired(true);
+        cbgama.setErrorMessage("Campo Obligatorio");
 
         layoutRow5.setWidthFull();
         layoutColumn2.setFlexGrow(1.0, layoutRow5);
@@ -134,21 +142,21 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
 
             if (!nombre.isEmpty() && !codigo.isEmpty() && !precio.isEmpty()
                     && !stock.isEmpty() && !marca.isEmpty() && !color.isEmpty()
-                    && !textField7.isEmpty() && !gama.isEmpty()
+                    && !material.isEmpty() && !cbgama.isEmpty()
             ){
-                String nombre = this.nombre.getValue();
-                String codigo = this.codigo.getValue();
-                double precio = Float.parseFloat(this.precio.getValue());
-                Integer stock = Integer.valueOf(this.stock.getValue());
-                String marca = this.marca.getValue();
-                String color = this.color.getValue();
-                String material = textField7.getValue();
 
-                SampleItem selectedItem = (SampleItem) gama.getValue();
-                String gama = selectedItem != null ? selectedItem.label() : null;
+                if (isNew) {
 
-                if (isNew)  {
-                    if(!codigo.isEmpty()){
+                    String nombre = this.nombre.getValue();
+                    String codigo = this.codigo.getValue();
+                    double precio = Float.parseFloat(this.precio.getValue());
+                    Integer stock = Integer.valueOf(this.stock.getValue());
+                    String marca = this.marca.getValue();
+                    String color = this.color.getValue();
+                    String material = this.material.getValue();
+
+                    SampleItem selectedItem = (SampleItem) cbgama.getValue();
+                    String gama = selectedItem != null ? selectedItem.label() : null;
 
                     // Crear una nueva instancia de Producto
 
@@ -156,37 +164,43 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
 
                     // Validar que los campos no estén vacíos antes de guardar
 
-                        viento.setCategoria("Viento");
-                        viento.setNombre(nombre);
-                        viento.setCodigo(codigo);
-                        viento.setPrecio(precio);
-                        viento.setStock(stock);
-                        viento.setMarca(marca);
-                        viento.setColor(color);
-                        viento.setMaterial(material);
-                        viento.setCalidad(gama);
+                    viento.setCategoria("Viento");
+                    viento.setNombre(nombre);
+                    viento.setCodigo(codigo);
+                    viento.setPrecio(precio);
+                    viento.setStock(stock);
+                    viento.setMarca(marca);
+                    viento.setColor(color);
+                    viento.setMaterial(material);
+                    viento.setCalidad(gama);
 
-                        productoService.agregarProducto(viento);
+                    productoService.agregarProducto(viento);
 
-                        // Navegar a la vista de productos después de guardar
+                }else{
 
-                        getUI().ifPresent(ui -> ui.navigate("instrumento"));
-                    }else{
-                        Notification.show("Error: Debe proporcionar un código de producto");
-                    }
-                }else if (!isNew){
-                    ((Viento) vientoEditar).setNombre(nombre);
+                    System.out.println("Estoy en edicion");
+                    System.out.println(vientoEditar.nombre);
+                    vientoEditar.nombre = nombre.getValue();
+                    vientoEditar.precio = Float.parseFloat(this.precio.getValue());
+                    vientoEditar.stock = Integer.parseInt(stock.getValue());
+                    vientoEditar.marca = marca.getValue();
+                    vientoEditar.color = color.getValue();
+                    vientoEditar.material= material.getValue();
+
+                    SampleItem selectedItem = (SampleItem) cbgama.getValue();
+                    String gama = selectedItem != null ? selectedItem.label() : null;
+                    vientoEditar.calidad = gama;
+
+                    productoService.editarProductoViento(vientoEditar.codigo,vientoEditar);
 
                 }
 
-
-
-
-
-
+                // Navegar a la vista de productos después de guardar
+                getUI().ifPresent(ui -> ui.navigate("instrumento"));
 
             }else{
-                Notification.show("Debe llenar todos los campos");
+                Notification.show("Error: Debe proporcionar un código de producto");
+
             }
 
         });
@@ -208,8 +222,8 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
         layoutRow3.add(marca);
         layoutRow3.add(color);
         layoutColumn2.add(layoutRow4);
-        layoutRow4.add(textField7);
-        layoutRow4.add(gama);
+        layoutRow4.add(material);
+        layoutRow4.add(cbgama);
         layoutColumn2.add(layoutRow5);
         layoutRow5.add(guardar);
         layoutRow5.add(btcancelar);
@@ -218,44 +232,43 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
 
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoProducto) {
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoEditar) {
+        if (codigoEditar != null){
 
-    }
-    /*public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigo) {
-        if (codigo != null){
-            Viento vientoEditar = (Viento) productoService.obtenerPorCodigo(codigo);
+            isNew = false;
+            vientoEditar = (Viento) productoService.obtenerPorCodigo(codigoEditar);
             nombre.setValue(vientoEditar.nombre);
-            this.codigo.setValue(vientoEditar.codigo);
+            codigo.setValue(vientoEditar.codigo);
+            codigo.setEnabled(false);
             precio.setValue(String.valueOf(vientoEditar.precio));
             stock.setValue(String.valueOf(vientoEditar.stock));
             marca.setValue(vientoEditar.marca);
             color.setValue(vientoEditar.color);
+            material.setValue(vientoEditar.material);
+
+            sampleItem = sampleItems.stream()
+                    .filter(x->x.label.equals(vientoEditar.getCalidad()))
+                    .findAny()
+                    .orElseThrow();
+            cbgama.setValue(sampleItem);
+
+        }else{
+            isNew = true;
+            System.out.println("codigo nulo");
         }
+
     }
-
-    */
-    /*
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String codigoProducto) {
-        if (codigo != null) {
-            //codigo.setEnabled(false);
-            isNew = false;
-            vientoEditar = (Viento) productoService.obtenerPorCodigo(codigoProducto);
-            nombre.setValue(vientoEditar.getNombre());
-        }
-    }
-    */
-
-
 
     record SampleItem(String value, String label, Boolean disabled) {
     }
 
     private void setComboBoxSampleData(ComboBox comboBox) {
-        List<SampleItem> sampleItems = new ArrayList<>();
+
         sampleItems.add(new SampleItem("alta", "Alta", null));
         sampleItems.add(new SampleItem("media", "Media", null));
         sampleItems.add(new SampleItem("baja", "Baja", Boolean.TRUE));
         comboBox.setItems(sampleItems);
         comboBox.setItemLabelGenerator(item -> ((SampleItem) item).label());
     }
+
 }
