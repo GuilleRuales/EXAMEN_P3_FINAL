@@ -34,6 +34,7 @@ import java.util.List;
 @Uses(Icon.class)
 public class InstrumentoView extends Composite<VerticalLayout> {
 
+    List<Producto> productos;
     private ProductoService productoService;
     public InstrumentoView(ProductoService productoService) {
 
@@ -67,6 +68,8 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                     botonBorrar.setIcon(new Icon(VaadinIcon.TRASH));
                     botonBorrar.addClickListener(e -> {
                         productoService.borrarProducto(producto.codigo);
+                        productos.clear();
+                        productos.addAll(productoService.listaproductos());
                         grid.getDataProvider().refreshAll();
                     });
                     // Botón para editar
@@ -102,8 +105,8 @@ public class InstrumentoView extends Composite<VerticalLayout> {
                     return buttons;
                 })).setHeader("Manage").setAutoWidth(true);
 
-        List<Producto> producto = productoService.listaproductos();
-        grid.setItems(producto);
+        productos = productoService.listaproductos();
+        grid.setItems(productos);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         getContent().add(buttonPrimary,grid);
     }
