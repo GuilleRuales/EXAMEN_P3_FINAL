@@ -52,9 +52,9 @@ public class Percusion extends Producto{
         System.out.println("Ingrese la calidad del producto");
         this.calidad = sc.next();
         System.out.println("Ingrese el tipo del producto (Acustico o Electrico)");
-        this.calidad = sc.next();
+        this.tipo = sc.next();
         System.out.println("Ingrese el material del instrumento");
-        this.calidad = sc.next();
+        this.material = sc.next();
 
     }
 

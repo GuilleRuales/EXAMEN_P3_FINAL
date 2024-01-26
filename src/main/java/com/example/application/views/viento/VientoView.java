@@ -240,7 +240,7 @@ public class VientoView extends Composite<VerticalLayout> implements HasUrlParam
             nombre.setValue(vientoEditar.nombre);
             codigo.setValue(vientoEditar.codigo);
             codigo.setEnabled(false);
-            precio.setValue(String.valueOf(vientoEditar.precio));
+            precio.setValue(String.valueOf(vientoEditar.getPrecio()));
             stock.setValue(String.valueOf(vientoEditar.stock));
             marca.setValue(vientoEditar.marca);
             color.setValue(vientoEditar.color);

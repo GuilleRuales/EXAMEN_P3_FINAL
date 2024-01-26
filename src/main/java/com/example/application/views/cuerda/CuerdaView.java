@@ -263,7 +263,7 @@ public class CuerdaView extends Composite<VerticalLayout> implements HasUrlParam
             nombre.setValue(cuerdaEditar.nombre);
             codigo.setValue(cuerdaEditar.codigo);
             codigo.setEnabled(false);
-            precio.setValue(String.valueOf(cuerdaEditar.precio));
+            precio.setValue(String.valueOf(cuerdaEditar.getPrecio()));
             stock.setValue(String.valueOf(cuerdaEditar.stock));
             marca.setValue(cuerdaEditar.marca);
             color.setValue(cuerdaEditar.color);

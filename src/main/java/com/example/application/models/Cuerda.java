@@ -57,6 +57,6 @@ public class Cuerda extends Producto {
         System.out.println("Ingrese la cantidad de cuerdas del producto");
         this.cantidadCuerdas= sc.next();
         System.out.println("Ingrese el tipo del producto (Acustico o Electrico)");
-        this.calidad = sc.next();
+        this.tipo = sc.next();
     }
 }

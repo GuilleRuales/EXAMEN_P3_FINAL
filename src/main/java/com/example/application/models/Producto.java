@@ -57,7 +57,7 @@ public class Producto {
     }
 
     public double getPrecio() {
-        return precio;
+        return Math.round(precio*100)/100.0;
     }
 
     public void setPrecio(double precio) {

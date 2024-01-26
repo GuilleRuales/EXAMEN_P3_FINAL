@@ -253,7 +253,7 @@ public class PercusionView extends Composite<VerticalLayout> implements HasUrlPa
             nombre.setValue(percusionEditar.nombre);
             codigo.setValue(percusionEditar.codigo);
             codigo.setEnabled(false);
-            precio.setValue(String.valueOf(percusionEditar.precio));
+            precio.setValue(String.valueOf(percusionEditar.getPrecio()));
             stock.setValue(String.valueOf(percusionEditar.stock));
             marca.setValue(percusionEditar.marca);
             color.setValue(percusionEditar.color);
